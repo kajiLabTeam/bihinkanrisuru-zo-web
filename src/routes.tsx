@@ -1,7 +1,7 @@
 import { Routes as ReactRouterRoutes, Route } from "react-router";
 import TopPage from "./pages/top";
 import AdminLayout from "./layouts/AdminLayout";
-import UserListPage from "./pages/user-list";
+import UserListPage from "./pages/admin/user-list";
 
 export default function Routes() {
   return (
