@@ -12,19 +12,13 @@ export default function Routes() {
   return (
     <ReactRouterRoutes>
       <Route path="/" element={<TopPage />} />
-      <Route path="admin" element={<AdminLayout />}>
-        <Route path="users" element={<UserListPage />} />
-        <Route path="equipments">
-          <Route index element={<AdminEquipmentListPage />} />
-          <Route
-            path="register"
-            element={<EquipmentRegistrationPage />}
-          />
-          <Route
-            path=":equipment_id/edit"
-            element={<EquipmentEditingPage />}
-          />
-        </Route>
+      <Route path="admin" element={<AdminLayout />} />
+      <Route path="users" element={<UserListPage />} />
+      <Route path="equipments">
+        <Route index element={<AdminEquipmentListPage />} />
+        <Route path="register" element={<EquipmentRegistrationPage />} />
+        <Route path=":equipment_id/edit" element={<EquipmentEditingPage />} />
+      </Route>
       <Route path="user" element={<UserLayout />}>
         <Route path="equipments" element={<UserEquipmentListPage />} />
       </Route>
