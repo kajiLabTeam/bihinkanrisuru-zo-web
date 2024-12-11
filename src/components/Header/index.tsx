@@ -1,4 +1,4 @@
-import { Flex, Link } from "@radix-ui/themes";
+import { Flex, Link } from '@radix-ui/themes';
 
 export interface Navigation {
   name: string;
@@ -12,19 +12,19 @@ interface Props {
 export default function Header({ navigations }: Props) {
   return (
     <Flex
-      px="5"
-      position="fixed"
-      top="0"
-      left="0"
-      width="100vw"
+      align="center"
+      direction="row"
+      gap="5"
       height="60px"
       justify="end"
-      direction="row"
-      align="center"
-      gap="5"
+      left="0"
+      position="fixed"
+      px="5"
+      top="0"
+      width="100vw"
     >
       {navigations.map((navigation) => (
-        <Link key={navigation.path} href={navigation.path}>
+        <Link href={navigation.path} key={navigation.path}>
           {navigation.name}
         </Link>
       ))}
