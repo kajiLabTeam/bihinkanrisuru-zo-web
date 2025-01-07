@@ -1,4 +1,4 @@
-export type Request = {
+export type EquipmentsRequest = {
     equipment_id?: string; //1234-0000
     name?: string; //備品登録名
     date?: {
@@ -8,7 +8,7 @@ export type Request = {
     tag?: string[]; //属性
 };
 
-export type Response = {
+export type EquipmentsResponse = {
     result: "ok" | "error";
     error: string; //エラーメッセージ
 };
