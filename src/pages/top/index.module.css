@@ -1,0 +1,44 @@
+.container {
+  padding: 20px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+
+.message_box {
+  position: relative;
+  bottom: 250px;
+}
+
+.message_box p {
+  padding-top: 25px;
+  width: 100%;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  position: absolute;
+}
+
+.message_box img {
+  position: absolute;
+}
+
+.mogura_box {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+
+.mogura {
+  width: 200px;
+}
+
+.link {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
+  text-decoration: none;
+  border: 1px solid #000;
+}
