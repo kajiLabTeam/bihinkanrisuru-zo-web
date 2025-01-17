@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import fukidashi from '~/assets/fukidashi.svg';
-import mogura from '~/assets/mogura.jpg';
+import mogura from '~/assets/mogura.png';
 import styles from './index.module.css';
 
 export default function TopPage() {
@@ -20,6 +20,12 @@ export default function TopPage() {
           <Link className={styles.link} to="/equipments">備品一覧</Link>
           <img alt="モグラ" className={styles.mogura} src={mogura} />
           <Link className={styles.link} to="/admin">管理者ログイン</Link>
+        </div>
+
+        <div className={styles.emphasis_line}>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
       </div>
     </div>

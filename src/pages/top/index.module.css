@@ -4,11 +4,36 @@
   display: flex;
   justify-content: center;
   align-items: end;
+  animation: bg-color 1s infinite;
+}
+
+@keyframes bg-color {
+  0% {
+    background-color: #ff3c3c;
+  }
+
+  25% {
+    background-color: #9dff3c;
+  }
+
+  50% {
+    background-color: #3cf8ff;
+  }
+
+  75% {
+    background-color: #803cff;
+  }
+
+  100% {
+    background-color: #ff3c3c;
+  }
 }
 
 .message_box {
   position: relative;
   bottom: 250px;
+  position: relative;
+  z-index: 1;
 }
 
 .message_box p {
@@ -18,6 +43,7 @@
   font-size: 3rem;
   font-weight: bold;
   position: absolute;
+  z-index: 10;
 }
 
 .message_box img {
@@ -28,10 +54,13 @@
   display: flex;
   gap: 50px;
   align-items: center;
+  z-index: 1;
+  position: relative;
 }
 
 .mogura {
   width: 200px;
+  mix-blend-mode: multiply;
 }
 
 .link {
@@ -41,4 +70,44 @@
   color: #000;
   text-decoration: none;
   border: 1px solid #000;
+  background-color: #fff;
+}
+
+.emphasis_line>div {
+  position: fixed;
+  width: 200vw;
+  height: 200vw;
+  left: calc(50% - 100vw);
+  bottom: calc(14% - 100vw);
+  background-image: repeating-conic-gradient(transparent 0,
+      transparent 13deg,
+      var(--color) 13deg,
+      var(--color) 16deg),
+    repeating-conic-gradient(transparent 0, transparent 20deg, var(--color) 20deg, var(--color) 23deg);
+}
+
+.emphasis_line>div:nth-of-type(1) {
+  --color: rgba(251, 255, 0, 0.616);
+  animation: rotate 20s linear infinite reverse;
+  animation-delay: -1s;
+}
+
+.emphasis_line>div:nth-of-type(2) {
+  --color: rgba(0, 0, 0, 0.1);
+  animation: rotate 20s linear infinite reverse;
+}
+
+.emphasis_line>div:nth-of-type(3) {
+  --color: rgba(255, 0, 0, 0.486);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(1turn);
+  }
 }
