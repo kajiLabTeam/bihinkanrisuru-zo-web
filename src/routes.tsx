@@ -11,14 +11,19 @@ import UserEquipmentListPage from './pages/user/equipment-list';
 export default function Routes() {
   return (
     <ReactRouterRoutes>
-      <Route element={<TopPage />} path="/" />
-      <Route element={<AdminLayout />} path="admin" />
-      <Route element={<UserListPage />} path="users" />
-      <Route path="equipments">
-        <Route element={<AdminEquipmentListPage />} index />
-        <Route element={<EquipmentRegistrationPage />} path="register" />
-        <Route element={<EquipmentEditingPage />} path=":equipment_id/edit" />
+      <Route element={<TopPage />} index />
+      <Route element={<AdminLayout />} path="admin">
+        <Route path="equipments">
+          <Route element={<AdminEquipmentListPage />} index />
+          <Route element={<EquipmentRegistrationPage />} path="register" />
+          <Route element={<EquipmentEditingPage />} path=":equipment_id/edit" />
+        </Route>
       </Route>
+
+      <Route element={<UserLayout />} path="users">
+        <Route element={<UserListPage />} index />
+      </Route>
+
       <Route element={<UserLayout />} path="user">
         <Route element={<UserEquipmentListPage />} path="equipments" />
       </Route>
