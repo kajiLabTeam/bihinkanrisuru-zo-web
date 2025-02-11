@@ -1,5 +1,5 @@
 export type EquipmentsRequest = {
-    equipment_id?: string; //1234-0000
+    asset_id?: string; //1234-0000,手動入力
     name?: string; //備品登録名
     purchase_date: Date; // 購入日
     place?: string; //保管場所
