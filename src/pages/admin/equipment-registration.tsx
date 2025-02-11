@@ -1,30 +1,59 @@
 import { EquipmentsRequest } from '@/types';
 import { Box, Button, Container, Flex, Grid, Heading, Link, TextField } from '@radix-ui/themes';
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from 'react-router';
 
+interface EquipmentFormData extends Omit<EquipmentsRequest, 'tag'> {
+  tag: string;
+}
 
 export default function EquipmentRegistrationPage() {
 
-  const { handleSubmit, register, formState: { errors } } = useForm<EquipmentsRequest>();
-  const onSubmit: SubmitHandler<EquipmentsRequest> = (data) => {
+  const router = useNavigate();
+
+  const { handleSubmit, register } = useForm<EquipmentFormData>();
+  const onSubmit: SubmitHandler<EquipmentFormData> = (data) => {
     console.log(data);
+    const apiUrl = import.meta.env.VITE_API_URL;
+
+    const body = {
+      "asset_id": data.equipment_id,
+      "name": data.name,
+      "purchase_date": data.purchase_date,
+      "place": data.place,
+      "tag": data.tag.split(',')//,区切りで分割
+    }
+    const url = new URL("/equipments", apiUrl);
+    fetch(url.toString(), { method: "post", body: JSON.stringify(body) })
+      .then((responce) => {
+        if (responce.ok) {
+          router("/equipments");
+        } else {
+          alert("登録に失敗しました");
+          console.error(responce);
+        }
+      }).catch((error) => {
+        alert("登録に失敗しました");
+        console.error(error)
+      }
+      )
   }
   return (
     <Container align="center" maxWidth="800px" px="3" py="3">
       <Heading as="h1" align="center">管理者用備品登録</Heading>
       <Box py="150px">
-        <form onSubmit={handleSubmit(onSubmit)} method='GET' action='equipments'>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Grid columns="150px 1fr" gap="5">
-            <label htmlFor="equipment_id">備品管理番号:</label>
-            <TextField.Root id='equipment_id' {...register('equipment_id')} />
+            <label htmlFor="asset_id">備品管理番号:</label>
+            <TextField.Root id='asset_id' {...register('equipment_id')} name='asset_id' />
             <label htmlFor="name">備品名:</label>
-            <TextField.Root id='name' {...register('name', { required: "備品名は必須です。" })} />
+            <TextField.Root id='name' {...register('name', { required: "備品名は必須です。" })} name='name' />
             <label htmlFor="purchase_date">購入日:</label>
-            <TextField.Root type='date' id='purchase_date' />
+            <TextField.Root type='date' id='purchase_date' name='purchase_date' />
             <label htmlFor="place">保管場所:</label>
-            <TextField.Root id='place' />
+            <TextField.Root id='place' name='place' />
             <label htmlFor="tag">タグ</label>
-            <TextField.Root id='tag' />
+            <TextField.Root id='tag' name='tag' />
           </Grid>
           <Flex align="center" justify="between" py="9">
             <Link href='/equipments'>戻る</Link>
