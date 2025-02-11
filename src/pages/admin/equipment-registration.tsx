@@ -17,7 +17,7 @@ export default function EquipmentRegistrationPage() {
     const apiUrl = import.meta.env.VITE_API_URL;
 
     const body = {
-      "asset_id": data.equipment_id,
+      "asset_id": data.asset_id,
       "name": data.name,
       "purchase_date": data.purchase_date,
       "place": data.place,
@@ -45,15 +45,15 @@ export default function EquipmentRegistrationPage() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid columns="150px 1fr" gap="5">
             <label htmlFor="asset_id">備品管理番号:</label>
-            <TextField.Root id='asset_id' {...register('equipment_id')} name='asset_id' />
+            <TextField.Root id='asset_id' {...register('asset_id')} />
             <label htmlFor="name">備品名:</label>
-            <TextField.Root id='name' {...register('name', { required: "備品名は必須です。" })} name='name' />
+            <TextField.Root id='name' {...register('name', { required: "備品名は必須です。" })} />
             <label htmlFor="purchase_date">購入日:</label>
-            <TextField.Root type='date' id='purchase_date' name='purchase_date' />
+            <TextField.Root type='date' id='purchase_date'{...register('purchase_date')} />
             <label htmlFor="place">保管場所:</label>
-            <TextField.Root id='place' name='place' />
+            <TextField.Root id='place' {...register('place')} />
             <label htmlFor="tag">タグ</label>
-            <TextField.Root id='tag' name='tag' />
+            <TextField.Root id='tag' {...register('tag')} />
           </Grid>
           <Flex align="center" justify="between" py="9">
             <Link href='/equipments'>戻る</Link>
