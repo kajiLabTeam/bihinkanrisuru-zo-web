@@ -21,7 +21,7 @@ export default function EquipmentEditPage() {
       void router('/equipments');
       return;
     }
-    fetch(`${apiUrl}/equipments/${dataId}/edit`)
+    fetch(`${apiUrl}/admin/equipments/${dataId}/edit`)
       .then((response) => response.json())
       .then((data: EquipmentEditedData) => {
         setValue('asset_id', data.asset_id);
@@ -35,7 +35,7 @@ export default function EquipmentEditPage() {
         // eslint-disable-next-line no-alert
         alert('データの取得に失敗しました');
       });
-  }, [dataId, setValue]);
+  }, [dataId, router, setValue]);
 
   const onSubmit: SubmitHandler<EquipmentEditedData> = (data) => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -49,10 +49,10 @@ export default function EquipmentEditPage() {
       place: data.place,
       tag: data.tag.split(','),
     };
-    fetch(`${apiUrl}/equipments`, { method: 'put', body: JSON.stringify(body) })
+    fetch(`${apiUrl}/admin/equipments`, { method: 'put', body: JSON.stringify(body) })
       .then((responce) => {
         if (responce.ok) {
-          void router('/equipments');
+          void router('/admin/equipments');
         }
         else {
           // eslint-disable-next-line no-alert
