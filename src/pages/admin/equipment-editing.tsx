@@ -18,7 +18,7 @@ export default function EquipmentEditPage() {
     // eslint-disable-next-line ts/strict-boolean-expressions
     if (typeof apiUrl !== 'string' || !dataId) {
       // 一覧画面に戻したい
-      void router('/equipments');
+      void router('/admin/equipments');
       return;
     }
     fetch(`${apiUrl}/admin/equipments/${dataId}/edit`)
