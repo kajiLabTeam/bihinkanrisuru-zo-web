@@ -29,7 +29,7 @@ export default function EquipmentRegistrationPage() {
     fetch(url.toString(), { method: 'post', body: JSON.stringify(body) })
       .then((responce) => {
         if (responce.ok) {
-          void router('/equipments');
+          void router('/admin/equipments');
         }
         else {
           // eslint-disable-next-line no-alert
