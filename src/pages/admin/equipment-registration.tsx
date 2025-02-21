@@ -25,8 +25,7 @@ export default function EquipmentRegistrationPage() {
       place: data.place,
       tag: data.tag.split(','), // ,区切りで分割
     };
-    const url = new URL('/equipments', apiUrl);
-    fetch(url.toString(), { method: 'post', body: JSON.stringify(body) })
+    fetch('/equipments', { method: 'post', body: JSON.stringify(body) })
       .then((responce) => {
         if (responce.ok) {
           void router('/equipments');
