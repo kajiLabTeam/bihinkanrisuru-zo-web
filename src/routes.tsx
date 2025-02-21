@@ -4,6 +4,7 @@ import UserLayout from './layouts/UserLayout';
 import EquipmentEditingPage from './pages/admin/equipment-editing';
 import AdminEquipmentListPage from './pages/admin/equipment-list';
 import EquipmentRegistrationPage from './pages/admin/equipment-registration';
+import UserEditingPage from './pages/admin/user-editing';
 import UserListPage from './pages/admin/user-list';
 import TopPage from './pages/top';
 import UserEquipmentListPage from './pages/user/equipment-list';
@@ -22,6 +23,7 @@ export default function Routes() {
 
         <Route element={<UserLayout />} path="users">
           <Route element={<UserListPage />} index />
+          <Route element={<UserEditingPage />} path=":user_id/edit" />
         </Route>
       </Route>
 
