@@ -87,7 +87,7 @@ export default function EquipmentEditPage() {
           <Flex align="center" justify="between" py="9">
             <Link href="/equipments">戻る</Link>
             {/* 後々増やす */}
-            <Link href="/equipments">消す</Link>
+            <Link href="/admin/equipments">消す</Link>
             <Button type="submit">登録</Button>
           </Flex>
         </form>
