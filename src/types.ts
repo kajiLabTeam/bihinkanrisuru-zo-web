@@ -1,7 +1,7 @@
 export interface EquipmentsRequest {
   asset_id?: string; // 1234-0000,手動入力
   name?: string; // 備品登録名
-  purchase_date: Date; // 購入日
+  purchase_date: number; // 購入日
   place?: string; // 保管場所
   tag?: string[]; // 属性
 }
@@ -17,9 +17,9 @@ export interface Equipments {
   name: string;
   state: string;
   borrower?: string;
-  borrowed_date?: Date;
-  registration_date: Date;
-  purchase_date: Date;
+  borrowed_date?: number;
+  registration_date: number;
+  purchase_date: number;
   place: string;
   tag?: string[];
 }
