@@ -25,8 +25,7 @@ export default function EquipmentRegistrationPage() {
       place: data.place,
       tag: data.tag.split(','), // ,区切りで分割
     };
-    const url = new URL('/equipments', apiUrl);
-    fetch(url.toString(), { method: 'post', body: JSON.stringify(body) })
+    fetch('/admin/equipments', { method: 'post', body: JSON.stringify(body) })
       .then((responce) => {
         if (responce.ok) {
           void router('/equipments');
@@ -62,7 +61,7 @@ export default function EquipmentRegistrationPage() {
             <TextField.Root id="tag" {...register('tag')} />
           </Grid>
           <Flex align="center" justify="between" py="9">
-            <Link href="/equipments">戻る</Link>
+            <Link href="/admin/equipments">戻る</Link>
             <Button type="submit">登録</Button>
           </Flex>
         </form>
