@@ -10,32 +10,32 @@ interface EquipmentEditedData extends Omit<EquipmentsRequest, 'tag'> {
 }
 
 export default function EquipmentEditPage() {
-  const dataId = useParams<{ id: string }>();
+  const equipmentId = useParams<{ id: string }>();
   const router = useNavigate();
-  const { handleSubmit, register, setValue } = useForm<EquipmentEditedData>();
+  const { handleSubmit, register, setValue, watch } = useForm<EquipmentEditedData>();
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL;
     // eslint-disable-next-line ts/strict-boolean-expressions
-    if (typeof apiUrl !== 'string' || !dataId) {
+    if (typeof apiUrl !== 'string' || !equipmentId) {
       // 一覧画面に戻したい
       void router('/admin/equipments');
       return;
     }
-    fetch(`${apiUrl}/admin/equipments/${dataId}/edit`)
+    fetch(`${apiUrl}/admin/equipments/${equipmentId}/edit`)
       .then((response) => response.json())
       .then((data: EquipmentEditedData) => {
         setValue('asset_id', data.asset_id);
         setValue('name', data.name);
         setValue('purchase_date', data.purchase_date);
         setValue('place', data.place);
-        setValue('tag', data.tag);
+        setValue('tag', data.tag ? data.tag.join(',') : '');
       })
       .catch((error) => {
         console.error('データの取得に失敗しました', error);
         // eslint-disable-next-line no-alert
         alert('データの取得に失敗しました');
       });
-  }, [dataId, router, setValue]);
+  }, [equipmentId, router, setValue]);
 
   const onSubmit: SubmitHandler<EquipmentEditedData> = (data) => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -67,6 +67,38 @@ export default function EquipmentEditPage() {
       });
   };
 
+  const handleDelete = async () => {
+    // eslint-disable-next-line no-alert
+    if (!window.confirm('消去していいですか？'))
+      return;
+
+    const apiUrl = import.meta.env.VITE_API_URL;
+    // eslint-disable-next-line ts/strict-boolean-expressions
+    if (typeof apiUrl !== 'string' || !equipmentId)
+      return;
+
+    try {
+      const response = await fetch(`${apiUrl}/admin/equipments/${equipmentId}`, { method: 'DELETE' });
+      if (response.ok) {
+        // eslint-disable-next-line no-alert
+        alert('削除しました');
+        void router('/admin/equipments'); // 削除後は一覧へ
+      }
+      else {
+        // eslint-disable-next-line no-alert
+        alert('削除に失敗しました');
+      }
+    }
+    catch (error) {
+      // eslint-disable-next-line no-alert
+      alert('削除に失敗しました');
+      console.error(error);
+    }
+  };
+
+  const rawDate = (watch('purchase_date'));
+  const formattedDate = (rawDate != null) ? new Date(rawDate * 1000).toISOString().split('T')[0] : '';
+
   return (
     <Container align="center" maxWidth="800px" px="3" py="3">
       <Heading align="center" as="h1">管理者用備品編集</Heading>
@@ -78,7 +110,7 @@ export default function EquipmentEditPage() {
             <label htmlFor="name">備品名:</label>
             <TextField.Root id="name" {...register('name', { required: '備品名は必須です。' })} />
             <label htmlFor="purchase_date">購入日:</label>
-            <TextField.Root id="purchase_date" type="date"{...register('purchase_date')} />
+            <TextField.Root id="purchase_date" type="date"{...register('purchase_date')} value={formattedDate} />
             <label htmlFor="place">保管場所:</label>
             <TextField.Root id="place" {...register('place')} />
             <label htmlFor="tag">タグ</label>
@@ -87,7 +119,7 @@ export default function EquipmentEditPage() {
           <Flex align="center" justify="between" py="9">
             <Link href="/equipments">戻る</Link>
             {/* 後々増やす */}
-            <Link href="/admin/equipments">消す</Link>
+            <Button onClick={() => (handleDelete)}>消す</Button>
             <Button type="submit">登録</Button>
           </Flex>
         </form>
