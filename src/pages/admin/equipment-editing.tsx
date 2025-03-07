@@ -21,9 +21,9 @@ export default function EquipmentEditPage() {
       void router('/admin/equipments');
       return;
     }
-    fetch(`${apiUrl}/admin/equipments/${equipmentId}/edit`)
+    fetch(`${apiUrl}/admin/equipments/${equipmentId}`)
       .then((response) => response.json())
-      .then((data: EquipmentEditedData) => {
+      .then((data: EquipmentsRequest) => {
         setValue('asset_id', data.asset_id);
         setValue('name', data.name);
         setValue('purchase_date', data.purchase_date);
@@ -49,7 +49,7 @@ export default function EquipmentEditPage() {
       place: data.place,
       tag: data.tag.split(','),
     };
-    fetch(`${apiUrl}/admin/equipments`, { method: 'put', body: JSON.stringify(body) })
+    fetch(`${apiUrl}/admin/equipments/${equipmentId}/edit`, { method: 'put', body: JSON.stringify(body) })
       .then((responce) => {
         if (responce.ok) {
           void router('/admin/equipments');
@@ -118,7 +118,6 @@ export default function EquipmentEditPage() {
           </Grid>
           <Flex align="center" justify="between" py="9">
             <Link href="/equipments">戻る</Link>
-            {/* 後々増やす */}
             <Button onClick={() => (handleDelete)}>消す</Button>
             <Button type="submit">登録</Button>
           </Flex>
