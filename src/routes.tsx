@@ -4,6 +4,7 @@ import UserLayout from './layouts/UserLayout';
 import EquipmentEditingPage from './pages/admin/equipment-editing';
 import AdminEquipmentListPage from './pages/admin/equipment-list';
 import EquipmentRegistrationPage from './pages/admin/equipment-registration';
+import UserEditPage from './pages/admin/user-editing';
 import UserListPage from './pages/admin/user-list';
 import TopPage from './pages/top';
 import UserEquipmentListPage from './pages/user/equipment-list';
@@ -13,7 +14,10 @@ export default function Routes() {
     <ReactRouterRoutes>
       <Route element={<TopPage />} path="/" />
       <Route element={<AdminLayout />} path="admin" />
-      <Route element={<UserListPage />} path="users" />
+      <Route path="users">
+        <Route element={<UserListPage />} index />
+        <Route element={<UserEditPage />} path=":user_id/edit" />
+      </Route>
       <Route path="equipments">
         <Route element={<AdminEquipmentListPage />} index />
         <Route element={<EquipmentRegistrationPage />} path="register" />
