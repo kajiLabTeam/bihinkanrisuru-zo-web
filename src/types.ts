@@ -23,3 +23,8 @@ export interface Equipments {
   place?: string;
   tag?: string[];
 }
+
+export interface Users {
+  id: string;
+  name: string;
+}
