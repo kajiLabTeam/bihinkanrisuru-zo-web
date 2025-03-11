@@ -7,6 +7,7 @@ import EquipmentRegistrationPage from './pages/admin/equipment-registration';
 import UserListPage from './pages/admin/user-list';
 import TopPage from './pages/top';
 import UserEquipmentListPage from './pages/user/equipment-list';
+import UserRegistrationPage from './pages/user/user-registration';
 
 export default function Routes() {
   return (
@@ -21,6 +22,7 @@ export default function Routes() {
       </Route>
       <Route element={<UserLayout />} path="user">
         <Route element={<UserEquipmentListPage />} path="equipments" />
+        <Route element={<UserRegistrationPage />} path="register" />
       </Route>
     </ReactRouterRoutes>
   );

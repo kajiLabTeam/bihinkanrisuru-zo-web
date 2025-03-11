@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Link } from "@radix-ui/themes"; 
-import { Pencil } from "lucide-react"; 
+import { Link } from "@radix-ui/themes";
+import { Pencil } from "lucide-react";
+import { Table, Box, TextField, Container, Heading, Flex, Button } from "@radix-ui/themes";
 
 interface User {
   id: string;
@@ -28,56 +29,58 @@ export default function UserListPage() {
   );
 
   return (
-    <div>
+    <Container maxWidth="800px" px="3" py="3">
       {/* ヘッダー */}
-      <header>
-        <h1>ユーザ一覧</h1>
-        <nav>
-          <Link href="/blank">備品一覧</Link>
-          <Link href="/users">ユーザ一覧</Link>
-        </nav>
-      </header>
+      <Heading align="center" as="h1">
+        ユーザ一覧
+      </Heading>
 
-      {/* 検索ボックス */}
-      <div>
-        <input
-          type="text"
+      <Flex justify="between" py="3">
+        <Link href="/blank">備品一覧</Link>
+        <Link href="/users">ユーザ一覧</Link>
+      </Flex>
+
+      {/* 検索 */}
+      <Box py="3">
+        <TextField.Root
           placeholder="ユーザ番号または名前で検索"
           value={search}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
-      </div>
+      </Box>
 
       {/* ユーザ一覧テーブル */}
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>ユーザ番号</th>
-              <th>ユーザ名</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUsers.length === 0 ? (
-              <tr>
-                <td colSpan={3}>データがありません</td>
-              </tr>
-            ) : (
-              filteredUsers.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.name}</td>
-                  <td>
-                    <Link href={`/users/edit/${user.id}`}>
-                      <Pencil /> 編集
-                    </Link>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.ColumnHeaderCell>ユーザ番号</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>ユーザ名</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+          {filteredUsers.length === 0 ? (
+            <Table.Row>
+              <Table.Cell colSpan={3} style={{ textAlign: "center" }}>
+                データがありません
+              </Table.Cell>
+            </Table.Row>
+          ) : (
+            filteredUsers.map((user) => (
+              <Table.Row key={user.id}>
+                <Table.RowHeaderCell>{user.id}</Table.RowHeaderCell>
+                <Table.Cell>{user.name}</Table.Cell>
+                <Table.Cell>
+                  <Link href={`/users/edit/${user.id}`}>
+                    <Pencil size={16} /> 編集
+                  </Link>
+                </Table.Cell>
+              </Table.Row>
+            ))
+          )}
+        </Table.Body>
+      </Table.Root>
+    </Container>
   );
 }
