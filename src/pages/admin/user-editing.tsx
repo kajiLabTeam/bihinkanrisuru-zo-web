@@ -4,7 +4,7 @@ import { Box, Button, Container, Flex, Grid, Heading, Link, TextField } from '@r
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 
-export default function UserEditPage() {
+export default function UserEditingPage() {
   // eslint-disable-next-line ts/naming-convention
   const { user_id } = useParams();
   const router = useNavigate();
