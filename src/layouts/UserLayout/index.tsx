@@ -6,7 +6,7 @@ import { Outlet } from 'react-router';
 const navigations = [
   {
     name: '備品一覧',
-    path: '/user/equipments',
+    path: '/admin/equipments',
   },
 ] satisfies Navigation[];
 
