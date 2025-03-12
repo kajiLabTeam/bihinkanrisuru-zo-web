@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
-import { Link } from "@radix-ui/themes";
-import { Pencil } from "lucide-react";
-import { Table, Box, TextField, Container, Heading, Flex, Button } from "@radix-ui/themes";
+import { Box, Container, Flex, Heading, Link, Table, TextField } from '@radix-ui/themes';
+import { Pencil } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface User {
   id: string;
@@ -9,23 +8,23 @@ interface User {
 }
 
 export default function UserListPage() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const dummyData: User[] = [
-      { id: "20k23075", name: "Tadachan" },
-      { id: "19k22095", name: "Mizukichan" },
-      { id: "19x22000", name: "s.ayakachan" },
-      { id: "19k22000", name: "gomamonochan" },
-      { id: "10k00000", name: "Kajichan" },
+      { id: '20k23075', name: 'Tadachan' },
+      { id: '19k22095', name: 'Mizukichan' },
+      { id: '19x22000', name: 's.ayakachan' },
+      { id: '19k22000', name: 'gomamonochan' },
+      { id: '10k00000', name: 'Kajichan' },
     ];
     setUsers(dummyData);
   }, []);
 
   const filteredUsers = users.filter(
     (user) =>
-      user.id.includes(search) || user.name.toLowerCase().includes(search.toLowerCase())
+      user.id.includes(search) || user.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -43,9 +42,9 @@ export default function UserListPage() {
       {/* 検索 */}
       <Box py="3">
         <TextField.Root
+          onChange={(e) => { setSearch(e.target.value); }}
           placeholder="ユーザ番号または名前で検索"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
         />
       </Box>
 
@@ -60,25 +59,29 @@ export default function UserListPage() {
         </Table.Header>
 
         <Table.Body>
-          {filteredUsers.length === 0 ? (
-            <Table.Row>
-              <Table.Cell colSpan={3} style={{ textAlign: "center" }}>
-                データがありません
-              </Table.Cell>
-            </Table.Row>
-          ) : (
-            filteredUsers.map((user) => (
-              <Table.Row key={user.id}>
-                <Table.RowHeaderCell>{user.id}</Table.RowHeaderCell>
-                <Table.Cell>{user.name}</Table.Cell>
-                <Table.Cell>
-                  <Link href={`/users/edit/${user.id}`}>
-                    <Pencil size={16} /> 編集
-                  </Link>
-                </Table.Cell>
-              </Table.Row>
-            ))
-          )}
+          {filteredUsers.length === 0
+            ? (
+                <Table.Row>
+                  <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
+                    データがありません
+                  </Table.Cell>
+                </Table.Row>
+              )
+            : (
+                filteredUsers.map((user) => (
+                  <Table.Row key={user.id}>
+                    <Table.RowHeaderCell>{user.id}</Table.RowHeaderCell>
+                    <Table.Cell>{user.name}</Table.Cell>
+                    <Table.Cell>
+                      <Link href={`/users/edit/${user.id}`}>
+                        <Pencil size={16} />
+                        {' '}
+                        編集
+                      </Link>
+                    </Table.Cell>
+                  </Table.Row>
+                ))
+              )}
         </Table.Body>
       </Table.Root>
     </Container>
