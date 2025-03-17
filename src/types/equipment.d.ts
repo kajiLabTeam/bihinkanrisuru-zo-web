@@ -16,6 +16,16 @@ export interface GetEquipmentsResponse {
   equipments: Equipment[];
 }
 
+export interface PostEquipmentRequest {
+  asset_id: string;
+  name: string;
+  place: string;
+  purchase_at: number;
+  tag_ids: string[];
+}
+
+export type PostEquipmentResponse = Equipment;
+
 export interface PutEquipmentRequest {
   asset_id: string;
   name: string;
