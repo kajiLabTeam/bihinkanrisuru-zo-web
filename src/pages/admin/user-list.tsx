@@ -1,11 +1,11 @@
-import { useUser } from '@/hooks/useUser';
-import { useUserSearchText } from '@/hooks/useUserSearchText';
+import { useSearchText } from '@/hooks/useSearchText';
+import { useUsers } from '@/hooks/useUsers';
 import { Box, Container, Flex, Heading, Link, Spinner, Table, TextField } from '@radix-ui/themes';
 import { Pencil } from 'lucide-react';
 
 export default function UserListPage() {
-  const { searchText, handleChange } = useUserSearchText();
-  const { users, error, loading } = useUser();
+  const { searchText, handleChange } = useSearchText();
+  const { users, error, loading } = useUsers();
 
   return (
     <Container maxWidth="800px" px="3" py="3">
