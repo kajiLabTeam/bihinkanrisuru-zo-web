@@ -1,50 +1,27 @@
-# React + TypeScript + Vite
+# 備品管理システムWebクライアント
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 開発環境での実行方法
 
-Currently, two official plugins are available:
+### 0. 準備
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#### バックエンドサーバの起動
 
-## Expanding the ESLint configuration
+[備品管理システムバックエンドサーバ](https://github.com/kajiLabTeam/bihinkanrisuru-zo-server)を`README.md`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+#### 環境変数の追加
 
-- Configure the top-level `parserOptions` property like this:
+[こちら](https://kjlb.esa.io/posts/7373)を参照してください
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 1. パッケージのインストール
+
+```shell
+yarn install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. 開発用サーバの起動
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```shell
+yarn dev
 ```
+
+`http://localhost:5713`にアクセス

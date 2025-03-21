@@ -13,3 +13,5 @@ export interface User {
 export interface GetUsersResponse {
   users: User[];
 }
+
+export type GetUserResponse = User;

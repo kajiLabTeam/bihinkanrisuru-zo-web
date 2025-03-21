@@ -2,7 +2,7 @@ import type { User } from '@/types/user';
 import { getUsers } from '@/api/getUsers';
 import { useEffect, useState } from 'react';
 
-export function useUser() {
+export function useUsers() {
   const [users, setUsers] = useState<User[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

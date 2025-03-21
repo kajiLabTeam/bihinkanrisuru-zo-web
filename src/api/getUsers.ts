@@ -1,32 +1,25 @@
 import type { GetUsersResponse } from '@/types/user';
 import { BACKEND_URL } from '@/constants';
-import { GetUsersError } from './errors';
+import { UserApiError } from './errors/user';
 
-export async function getUsers(name = '', limit = 50, offset = 0, sort = 'createdAt', order = 'desc'): Promise<GetUsersResponse> {
+export async function getUsers(
+  name = '',
+  limit = 50,
+  offset = 0,
+  sort = 'createdAt',
+  order = 'desc',
+): Promise<GetUsersResponse> {
   try {
-    const params = new URLSearchParams({
-      name,
-      limit: limit.toString(),
-      offset: offset.toString(),
-      sort,
-      order,
-    });
+    const params = new URLSearchParams({ name, limit: `${limit}`, offset: `${offset}`, sort, order });
     const response = await fetch(`${BACKEND_URL}/users?${params}`);
 
-    if (response.status === 500) {
-      throw new GetUsersError(
-        'InternalServerError',
-      );
+    if (!response.ok) {
+      throw new UserApiError(response.status === 500 ? 'InternalServerError' : 'UnexpectedError');
     }
 
     return await response.json();
   }
-  catch (err: unknown) {
-    if (err instanceof Error) {
-      throw new GetUsersError('FetchApiError');
-    }
-    throw new GetUsersError(
-      'UnexpectedError',
-    );
+  catch {
+    throw new UserApiError('FetchApiError');
   }
 }

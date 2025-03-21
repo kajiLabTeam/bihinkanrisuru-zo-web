@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 
-export function useUserSearchText() {
+export function useSearchText() {
   const [searchText, setSearchText] = useState('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

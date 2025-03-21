@@ -1,70 +1,71 @@
-import type { EquipmentsRequest } from '@/types';
-import type { SubmitHandler } from 'react-hook-form';
-import { Box, Button, Container, Flex, Grid, Heading, Link, TextField } from '@radix-ui/themes';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
+import type { EditEquipmentForm } from '@/types/form';
+import TagInput from '@/components/TagInput';
+import { useCreateEquipment } from '@/hooks/useCreateEquipment';
+import { Box, Button, Container, Flex, Grid, Heading, Link, Spinner, TextField } from '@radix-ui/themes';
+import { FormProvider, useForm } from 'react-hook-form';
 
-interface EquipmentFormData extends Omit<EquipmentsRequest, 'tag'> {
-  tag: string;
-}
+export default function EquipmentEditPage() {
+  const { equipment, error, loading, onSubmit } = useCreateEquipment();
+  const methods = useForm<EditEquipmentForm>();
+  const { handleSubmit, register } = methods;
 
-export default function EquipmentRegistrationPage() {
-  const router = useNavigate();
-
-  const { handleSubmit, register } = useForm<EquipmentFormData>();
-  const onSubmit: SubmitHandler<EquipmentFormData> = (data) => {
-    const apiUrl = import.meta.env.VITE_API_URL;
-    if (typeof apiUrl !== 'string') {
-      return;
-    }
-
-    const body = {
-      asset_id: data.asset_id,
-      name: data.name,
-      purchase_date: data.purchase_date,
-      place: data.place,
-      tag: data.tag.split(','), // ,区切りで分割
-    };
-    fetch('/admin/equipments', { method: 'post', body: JSON.stringify(body) })
-      .then((responce) => {
-        if (responce.ok) {
-          void router('/admin/equipments');
-        }
-        else {
-          // eslint-disable-next-line no-alert
-          alert('登録に失敗しました');
-          console.error(responce);
-        }
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-alert
-        alert('登録に失敗しました');
-        console.error(error);
-      },
-      );
-  };
   return (
     <Container align="center" maxWidth="800px" px="3" py="3">
-      <Heading align="center" as="h1">管理者用備品登録</Heading>
+      <Heading align="center" as="h1">管理者用備品編集</Heading>
       <Box py="150px">
-        <form onSubmit={() => handleSubmit(onSubmit)}>
-          <Grid columns="150px 1fr" gap="5">
-            <label htmlFor="asset_id">備品管理番号:</label>
-            <TextField.Root id="asset_id" {...register('asset_id')} />
-            <label htmlFor="name">備品名:</label>
-            <TextField.Root id="name" {...register('name', { required: '備品名は必須です。' })} />
-            <label htmlFor="purchase_date">購入日:</label>
-            <TextField.Root id="purchase_date" type="date"{...register('purchase_date')} />
-            <label htmlFor="place">保管場所:</label>
-            <TextField.Root id="place" {...register('place')} />
-            <label htmlFor="tag">タグ</label>
-            <TextField.Root id="tag" {...register('tag')} />
-          </Grid>
-          <Flex align="center" justify="between" py="9">
-            <Link href="/admin/equipments">戻る</Link>
-            <Button type="submit">登録</Button>
-          </Flex>
-        </form>
+        {loading
+          ? (
+              <Flex align="center" height="200px" justify="center">
+                <Spinner />
+              </Flex>
+            )
+          : (error != null)
+              ? (
+                  <Box>
+                    <p>{error}</p>
+                    <Link href="/equipments">戻る</Link>
+                  </Box>
+                )
+              : !equipment
+                  ? (
+                      <Box>
+                        <p>指定された備品が見つかりませんでした。</p>
+                        <Link href="/equipments">戻る</Link>
+                      </Box>
+                    )
+                  : (
+                      <FormProvider {...methods}>
+                        <form onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
+                          <Grid columns="150px 1fr" gap="5">
+                            <label htmlFor="assetId">備品管理番号:</label>
+                            <TextField.Root
+                              id="assetId"
+                              {...register('assetId')}
+                              defaultValue={equipment.asset_id}
+                            />
+                            <label htmlFor="name">備品名:</label>
+                            <TextField.Root id="name" {...register('name', { required: '備品名は必須です。' })} defaultValue={equipment.name} />
+                            <label htmlFor="purchaseAt">購入日:</label>
+                            <TextField.Root
+                              id="purchaseAt"
+                              type="date"
+                              {...register('purchaseAt', {
+                                setValueAs: (value: string) => value ? new Date(value).getTime() : null,
+                              })}
+                              defaultValue={equipment.purchase_at ? new Date(equipment.purchase_at).toISOString().split('T')[0] : ''}
+                            />
+                            <label htmlFor="place">保管場所:</label>
+                            <TextField.Root id="place" {...register('place')} defaultValue={equipment.place} />
+                            <label htmlFor="tagIds">タグ</label>
+                            <TagInput initialTags={equipment.tags} />
+                          </Grid>
+                          <Flex align="center" justify="between" py="9">
+                            <Link href="/equipments">戻る</Link>
+                            <Button>登録</Button>
+                          </Flex>
+                        </form>
+                      </FormProvider>
+                    )}
       </Box>
     </Container>
   );
