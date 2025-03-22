@@ -35,6 +35,10 @@ export interface PutEquipmentRequest {
   tag_ids: string[];
 }
 
+export interface BorrowEquipmentRequest {
+  user_id: string;
+}
+
 export type EquipmentStatus = (typeof EquipmentStatusValue)[keyof typeof EquipmentStatusValue];
 export type PutEquipmentResponse = Equipment;
 export type GetEquipmentResponse = Equipment;
