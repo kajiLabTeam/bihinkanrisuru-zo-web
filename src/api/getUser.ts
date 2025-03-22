@@ -3,7 +3,7 @@ import type { UserApiErrorType } from './errors/user';
 import { BACKEND_URL } from '@/constants';
 import { UserApiError } from './errors/user';
 
-export async function getUsers(id: string): Promise<GetUserResponse> {
+export async function getUser(id: string): Promise<GetUserResponse> {
   try {
     const response = await fetch(`${BACKEND_URL}/users/${id}`);
 
@@ -17,7 +17,7 @@ export async function getUsers(id: string): Promise<GetUserResponse> {
 
     return await response.json();
   }
-  catch {
-    throw new UserApiError('FetchApiError');
+  catch (err) {
+    throw err instanceof UserApiError ? err : new UserApiError('FetchApiError');
   }
 }

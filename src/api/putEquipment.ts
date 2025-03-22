@@ -24,7 +24,7 @@ export async function putEquipment(id: string, updateData: PutEquipmentRequest):
 
     return await response.json();
   }
-  catch {
-    throw new EquipmentApiError('FetchApiError');
+  catch (err) {
+    throw err instanceof EquipmentApiError ? err : new EquipmentApiError('FetchApiError');
   }
 }

@@ -18,7 +18,7 @@ export async function getEquipment(id: string): Promise<GetEquipmentResponse> {
 
     return await response.json();
   }
-  catch {
-    throw new EquipmentApiError('FetchApiError');
+  catch (err) {
+    throw err instanceof EquipmentApiError ? err : new EquipmentApiError('FetchApiError');
   }
 }

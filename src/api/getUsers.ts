@@ -19,7 +19,7 @@ export async function getUsers(
 
     return await response.json();
   }
-  catch {
-    throw new UserApiError('FetchApiError');
+  catch (err) {
+    throw err instanceof UserApiError ? err : new UserApiError('FetchApiError');
   }
 }

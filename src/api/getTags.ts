@@ -15,7 +15,7 @@ export async function getTags(
 
     return await response.json();
   }
-  catch {
-    throw new TagApiError('FetchApiError');
+  catch (err) {
+    throw err instanceof TagApiError ? err : new TagApiError('FetchApiError');
   }
 }
