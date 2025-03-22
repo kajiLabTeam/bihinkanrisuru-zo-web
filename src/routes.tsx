@@ -8,13 +8,14 @@ import EquipmentRegistrationPage from './pages/admin/equipment-registration';
 import UserEditPage from './pages/admin/user-editing';
 import UserListPage from './pages/admin/user-list';
 import EquipmentQRCodeScannerPage from './pages/client/EquipmentQRCodeScanner';
+import EquipmentReturnConfirmationPage from './pages/client/EquipmentTransactionConfirmation';
 import TopPage from './pages/top';
 import UserEquipmentListPage from './pages/user/equipment-list';
 
 export default function Routes() {
   return (
     <ReactRouterRoutes>
-      <Route element={<TopPage />} index />
+      <Route element={<TopPage mode="top" />} index />
       <Route element={<AdminLayout />} path="admin">
         <Route path="equipments">
           <Route element={<AdminEquipmentListPage />} index />
@@ -29,8 +30,19 @@ export default function Routes() {
       <Route element={<UserLayout />} path="user">
         <Route element={<UserEquipmentListPage />} path="equipments" />
       </Route>
-      <Route element={<ClientLayout />} path="client">
-        <Route element={<EquipmentQRCodeScannerPage />} index />
+      <Route path="client">
+        <Route element={<TopPage mode="client" />} index />
+        <Route element={<ClientLayout />} path="equipments">
+          <Route element={<EquipmentQRCodeScannerPage />} path="scan" />
+          <Route
+            element={<EquipmentReturnConfirmationPage mode="returns" />}
+            path=":equipment_id/returns/:user_id/confirm"
+          />
+          <Route
+            element={<EquipmentReturnConfirmationPage mode="loans" />}
+            path=":equipment_id/loans/:user_id/confirm"
+          />
+        </Route>
       </Route>
     </ReactRouterRoutes>
   );
