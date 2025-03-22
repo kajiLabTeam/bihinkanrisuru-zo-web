@@ -11067,6 +11067,11 @@ scslre@^0.3.0:
     refa "^0.12.0"
     regexp-ast-analysis "^0.7.0"
 
+scss-reset@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/scss-reset/-/scss-reset-1.4.6.tgz#6d69cd3c8ce988e860714636e5ad31361fccaba8"
+  integrity sha512-ioPmXUxVH0NFuNBPs88SolUkUuKYIIQ0CUGssx2yq8m4fuMxGLigjnpXa6JAC2j5w1p66JA33UDd+cKkFJp7yw==
+
 select-hose@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
