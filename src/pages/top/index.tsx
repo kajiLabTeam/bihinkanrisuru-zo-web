@@ -1,9 +1,16 @@
+import { CLIENT_LINK_DATA, TOP_LINK_DATA } from '@/constants';
 import { Link } from 'react-router';
 import fukidashi from '~/assets/fukidashi.svg';
 import mogura from '~/assets/mogura.png';
 import styles from './index.module.css';
 
-export default function TopPage() {
+interface Props {
+  mode: 'top' | 'client';
+}
+
+export default function TopPage({ mode = 'top' }: Props) {
+  const linkData = mode === 'top' ? TOP_LINK_DATA : CLIENT_LINK_DATA;
+
   return (
     <div className={styles.container}>
       <div>
@@ -17,9 +24,13 @@ export default function TopPage() {
         </div>
 
         <div className={styles.mogura_box}>
-          <Link className={styles.link} to="/equipments">備品一覧</Link>
+          {
+            Object.entries(linkData).map(([path, text]) => (
+              <Link className={styles.link} key={path} to={path}>{text}</Link>
+            ))
+          }
+
           <img alt="モグラ" className={styles.mogura} src={mogura} />
-          <Link className={styles.link} to="/admin">管理者ログイン</Link>
         </div>
 
         <div className={styles.emphasis_line}>
