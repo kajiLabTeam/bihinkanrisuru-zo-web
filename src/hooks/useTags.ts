@@ -13,21 +13,21 @@ export function useTags(initialTags: Tag[]) {
   const tags = useAtomValue(tagsAtom);
   const fetchTags = useSetAtom(fetchTagsAtom);
   const setTags = useSetAtom(tagsAtom);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [selectedTags, setSelectedTags] = useState<Tag[]>(initialTags);
 
   const handleSearchTags = debounce(async (name: string) => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       await fetchTags({ name, sort: 'name', order: 'asc' });
     }
     catch (err) {
       setError(err instanceof Error ? err.message : 'エラーが発生しました');
     }
     finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, DEBOUNCE_TIME);
 
@@ -61,17 +61,17 @@ export function useTags(initialTags: Tag[]) {
   useEffect(() => {
     void (async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         await fetchTags({});
       }
       catch (err) {
         setError(err instanceof Error ? err.message : 'エラーが発生しました');
       }
       finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     })();
   }, [fetchTags]);
 
-  return { tags, selectedTags, searchTerm, error, loading, handleInputChange, handleTagToggle, removeTag };
+  return { tags, selectedTags, searchTerm, error, isLoading, handleInputChange, handleTagToggle, removeTag };
 }

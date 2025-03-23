@@ -14,7 +14,7 @@ export function useCreateEquipment() {
   const equipment = useAtomValue(equipmentAtom);
   const fetchEquipment = useSetAtom(fetchEquipmentAtom);
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<EditEquipmentForm> = async (data): Promise<void> => {
@@ -22,7 +22,7 @@ export function useCreateEquipment() {
       return;
 
     try {
-      setLoading(true);
+      setIsLoading(true);
       const createData = {
         asset_id: data.assetId,
         name: data.name,
@@ -39,7 +39,7 @@ export function useCreateEquipment() {
       setError(err instanceof Error ? err.message : 'エラーが発生しました');
     }
     finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -50,17 +50,17 @@ export function useCreateEquipment() {
 
     void (async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         await fetchEquipment(equipmentId);
       }
       catch (err) {
         setError(err instanceof Error ? err.message : 'エラーが発生しました');
       }
       finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     })();
   }, [equipmentId, fetchEquipment]);
 
-  return { equipment, loading, error, onSubmit };
+  return { equipment, isLoading, error, onSubmit };
 }

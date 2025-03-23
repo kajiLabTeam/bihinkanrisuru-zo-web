@@ -1,4 +1,5 @@
 import type { EquipmentStatus as EquipmentStatusValue } from '@/constants';
+import type { User } from '@/types/user';
 
 export interface Equipment {
   id: string;
