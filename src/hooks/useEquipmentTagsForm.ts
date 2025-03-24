@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-export function useTags(initialTags: Tag[]) {
+export function useEquipmentTagsForm(initialTags: Tag[]) {
   const { setValue } = useFormContext<EditEquipmentForm>();
   const tags = useAtomValue(tagsAtom);
   const fetchTags = useSetAtom(fetchTagsAtom);
