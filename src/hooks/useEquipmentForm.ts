@@ -7,7 +7,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-export function usePutEquipment() {
+export function useEquipmentForm() {
   const router = useNavigate();
   const equipmentId = useParams<{ equipment_id: string }>().equipment_id;
 

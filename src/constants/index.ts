@@ -14,7 +14,7 @@ export const UserStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
-};
+} as const;
 
 export const TOP_LINK_DATA = {
   '/equipments': '備品一覧',

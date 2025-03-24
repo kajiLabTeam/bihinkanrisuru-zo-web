@@ -1,5 +1,6 @@
 import type { EquipmentStatus } from './equipment';
 import type { Tag } from './tag';
+import type { UserStatus } from './user';
 
 export interface EditEquipmentForm {
   assetId: string;
@@ -8,4 +9,10 @@ export interface EditEquipmentForm {
   place: string;
   purchaseAt: number;
   tags: Tag[];
+}
+
+export interface EditUserForm {
+  id: string;
+  name: string;
+  status: UserStatus;
 }

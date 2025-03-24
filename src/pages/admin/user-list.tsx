@@ -1,7 +1,6 @@
 import { useSearchText } from '@/hooks/useSearchText';
 import { useUsers } from '@/hooks/useUsers';
-import { Box, Container, Flex, Heading, Link, Spinner, Table, TextField } from '@radix-ui/themes';
-import { Pencil } from 'lucide-react';
+import { Badge, Box, Container, Flex, Heading, Link, Spinner, Table, TextField } from '@radix-ui/themes';
 
 export default function UserListPage() {
   const { searchText, handleChange } = useSearchText();
@@ -28,7 +27,7 @@ export default function UserListPage() {
           <Table.Row>
             <Table.ColumnHeaderCell>ユーザ番号</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>ユーザ名</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>ステータス</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -52,13 +51,16 @@ export default function UserListPage() {
                   ? (
                       users.map((user) => (
                         <Table.Row key={user.id}>
-                          <Table.RowHeaderCell>{user.id}</Table.RowHeaderCell>
+                          <Table.RowHeaderCell>
+                            <Link href={`users/${user.id}/edit`}>
+                              {user.id}
+                            </Link>
+                          </Table.RowHeaderCell>
                           <Table.Cell>{user.name}</Table.Cell>
                           <Table.Cell>
-                            <Link href={`/users/edit/${user.id}`}>
-                              <Pencil size={16} />
-                              編集
-                            </Link>
+                            <Badge color={user.status === 'PENDING' ? 'blue' : user.status === 'APPROVED' ? 'green' : 'indigo'}>
+                              {user.status}
+                            </Badge>
                           </Table.Cell>
                         </Table.Row>
                       ))
