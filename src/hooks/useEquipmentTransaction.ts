@@ -15,7 +15,7 @@ export function useEquipmentTransaction() {
   const equipmentId = equipment_id ?? '';
   const userId = user_id ?? '';
 
-  const _handleError = (err: unknown) => {
+  const handleError = (err: unknown) => {
     flushSync(() => {
       onOpen(err instanceof Error ? err.message : 'エラーが発生しました', 'red');
     });
@@ -25,12 +25,11 @@ export function useEquipmentTransaction() {
     }, ERROR_REDIRECT_DELAY);
   };
 
-  const _handleSuccess = (message: string) => {
+  const handleSuccess = (message: string) => {
     flushSync(() => {
       onOpen(message, 'green');
     });
 
-    console.log('こんにちは', isOpen, color, message);
     setTimeout(() => {
       void router('/client/equipments/scan');
     }, ERROR_REDIRECT_DELAY);
@@ -40,10 +39,10 @@ export function useEquipmentTransaction() {
     try {
       setIsLoading(true);
       await returnEquipment(equipmentId);
-      _handleSuccess('備品を返却が完了しました');
+      handleSuccess('備品を返却が完了しました');
     }
     catch (err) {
-      _handleError(err);
+      handleError(err);
     }
     finally {
       setIsLoading(false);
@@ -54,10 +53,10 @@ export function useEquipmentTransaction() {
     try {
       setIsLoading(true);
       await borrowEquipment(userId, equipmentId);
-      _handleSuccess('備品の貸出が完了しました');
+      handleSuccess('備品の貸出が完了しました');
     }
     catch (err) {
-      _handleError(err);
+      handleError(err);
     }
     finally {
       setIsLoading(false);

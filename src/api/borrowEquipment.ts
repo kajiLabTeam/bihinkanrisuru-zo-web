@@ -20,10 +20,7 @@ export async function borrowEquipment(userId: string, equipmentId: string): Prom
         422: 'BorrowUnprocessableEntityError',
         500: 'InternalServerError',
       };
-      if (response.status === 422) {
-        console.log('422エラーだよ');
-        console.log(errorMap[response.status]);
-      }
+
       throw new EquipmentApiError(errorMap[response.status]);
     }
 

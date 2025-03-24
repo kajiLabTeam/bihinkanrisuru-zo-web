@@ -36,15 +36,12 @@ export function useCamera() {
   }, []);
 
   const handleStudentIdScan = async (studentId: string) => {
+    setIsToastOpen(false);
     try {
-      setIsToastOpen(false);
-
       const user = await getUser(studentId);
       if (user.status !== UserStatus.APPROVED) {
-        handleError('この学生証は利用できません。');
-        return;
+        throw new Error('この学生証は利用できません。');
       }
-
       studentIdRef.current = studentId;
       setScanState({ mode: 'borrowEquipmentId', text: modeTextMap.borrowEquipmentId });
       setScanMessage('学生証をスキャンしました。備品QRコードをスキャンしてください。');
@@ -56,28 +53,24 @@ export function useCamera() {
   };
 
   const handleEquipmentIdScan = async (equipmentId: string) => {
+    setIsToastOpen(false);
     try {
-      setIsToastOpen(false);
-
       const equipment = await getEquipment(equipmentId);
-
       equipmentIdRef.current = equipmentId;
 
-      if (equipment.status === EquipmentStatus.BORROWED && studentIdRef.current === null) {
-        if (equipment.borrower?.id === undefined) {
-          handleError('この備品は返却可能な状態ではありません。');
-          return;
+      if (studentIdRef.current === null) {
+        if (equipment.status !== EquipmentStatus.BORROWED || ((equipment.borrower?.id) == null)) {
+          throw new Error('この備品は返却可能な状態ではありません。');
         }
+        setIsCameraOn(false);
         void router(`/client/equipments/${equipmentIdRef.current}/returns/${equipment.borrower.id}/confirm`);
-      }
-      if (equipment.status !== EquipmentStatus.AVAILABLE) {
-        handleError('この備品は貸出可能な状態ではありません。');
         return;
       }
 
-      if (isCameraOn)
+      if (equipment.status === EquipmentStatus.AVAILABLE) {
         setIsCameraOn(false);
-      void router(`/client/equipments/${equipmentIdRef.current}/loans/${studentIdRef.current}/confirm`);
+        void router(`/client/equipments/${equipmentIdRef.current}/loans/${studentIdRef.current}/confirm`);
+      }
     }
     catch (err) {
       handleError(err instanceof Error ? err.message : '備品QRコードスキャンに失敗しました。もう一度試してください。');
@@ -91,39 +84,57 @@ export function useCamera() {
   const videoRef = useZxing({
     async onDecodeResult(result) {
       setScanMessage(null);
+      setIsLoading(true);
 
       const scannedText = result.getText();
-
-      if (isStudentId(scannedText)) {
-        await handleStudentIdScan(scannedText);
+      try {
+        if (isStudentId(scannedText)) {
+          await handleStudentIdScan(scannedText);
+        }
+        else if (isEquipmentId(scannedText)) {
+          await handleEquipmentIdScan(scannedText);
+        }
       }
-      else if (isEquipmentId(scannedText)) {
-        await handleEquipmentIdScan(scannedText);
+      finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     },
     timeBetweenDecodingAttempts: SCAN_INTERVAL,
   }).ref as RefObject<HTMLVideoElement>;
 
   const startCamera = useCallback(async () => {
     try {
+      if (videoRef.current?.srcObject)
+        return;
+
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current)
+      if (videoRef.current) {
         videoRef.current.srcObject = stream;
+      }
     }
     catch {
       handleError('カメラへのアクセスに失敗しました。もう一度試してください。');
+      setIsCameraOn(false);
     }
   }, [videoRef, handleError]);
 
   const stopCamera = useCallback(() => {
-    videoRef.current?.srcObject
-    && (videoRef.current.srcObject as MediaStream).getTracks().forEach((track) => { track.stop(); });
+    if (videoRef.current?.srcObject) {
+      (videoRef.current.srcObject as MediaStream)
+        .getTracks()
+        .forEach((track) => { track.stop(); });
+
+      videoRef.current.srcObject = null;
+    }
   }, [videoRef]);
 
   useEffect(() => {
-    isCameraOn ? void startCamera() : stopCamera();
+    if (isCameraOn) {
+      void startCamera();
+    }
+    else {
+      stopCamera();
+    }
     return () => {
       stopCamera();
     };
