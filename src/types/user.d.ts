@@ -10,5 +10,10 @@ export interface GetUsersResponse {
   users: User[];
 }
 
+export interface PutUserRequest {
+  name: string;
+  status: UserStatus;
+}
+
 export type GetUserResponse = User;
 export type UserStatus = (typeof UserStatusValue)[keyof typeof UserStatusValue];
