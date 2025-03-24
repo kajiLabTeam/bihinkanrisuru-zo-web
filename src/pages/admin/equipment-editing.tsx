@@ -1,12 +1,12 @@
 import type { EditEquipmentForm } from '@/types/form';
 import EquipmentStatusInput from '@/components/EquipmentStatusInput';
 import TagInput from '@/components/TagInput';
-import { usePutEquipment } from '@/hooks/usePutEquipment';
+import { useEquipmentForm } from '@/hooks/useEquipmentForm';
 import { Box, Button, Container, Flex, Grid, Heading, Link, Spinner, TextField } from '@radix-ui/themes';
 import { FormProvider, useForm } from 'react-hook-form';
 
 export default function EquipmentEditPage() {
-  const { equipment, error, isLoading, onSubmit } = usePutEquipment();
+  const { equipment, error, isLoading, onSubmit } = useEquipmentForm();
   const methods = useForm<EditEquipmentForm>();
   const { handleSubmit, register } = methods;
 
