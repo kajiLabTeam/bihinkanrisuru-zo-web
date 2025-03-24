@@ -6,7 +6,6 @@ export function useToast() {
   const [color, setColor] = useState<string | null>(null);
 
   const onOpen = (message: string, color: string) => {
-    console.log(message);
     setMessage(message);
     setColor(color);
     setIsOpen(true);

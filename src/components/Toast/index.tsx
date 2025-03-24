@@ -16,7 +16,9 @@ export function Toast({ color, message, onClose }: Props) {
 
   useEffect(() => {
     const timer = setTimeout(onClose, TOAST_DURATION);
-    return () => { clearTimeout(timer); };
+    return () => {
+      clearTimeout(timer);
+    };
   }, [onClose]);
 
   return (
