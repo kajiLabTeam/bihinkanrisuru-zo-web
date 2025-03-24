@@ -1,19 +1,21 @@
 import { Routes as ReactRouterRoutes, Route } from 'react-router';
 import AdminLayout from './layouts/AdminLayout';
+import ClientLayout from './layouts/ClientLayout';
 import UserLayout from './layouts/UserLayout';
 import EquipmentEditingPage from './pages/admin/equipment-editing';
 import AdminEquipmentListPage from './pages/admin/equipment-list';
 import EquipmentRegistrationPage from './pages/admin/equipment-registration';
 import UserEditPage from './pages/admin/user-editing';
 import UserListPage from './pages/admin/user-list';
+import EquipmentQRCodeScannerPage from './pages/client/EquipmentQRCodeScanner';
+import EquipmentReturnConfirmationPage from './pages/client/EquipmentTransactionConfirmation';
 import TopPage from './pages/top';
 import UserEquipmentListPage from './pages/user/equipment-list';
-import UserRegistrationPage from './pages/user/user-registration';
 
 export default function Routes() {
   return (
     <ReactRouterRoutes>
-      <Route element={<TopPage />} path="/" />
+      <Route element={<TopPage mode="top" />} index />
       <Route element={<AdminLayout />} path="admin">
         <Route path="equipments">
           <Route element={<AdminEquipmentListPage />} index />
@@ -27,7 +29,20 @@ export default function Routes() {
       </Route>
       <Route element={<UserLayout />} path="user">
         <Route element={<UserEquipmentListPage />} path="equipments" />
-        <Route element={<UserRegistrationPage />} path="register" />
+      </Route>
+      <Route path="client">
+        <Route element={<TopPage mode="client" />} index />
+        <Route element={<ClientLayout />} path="equipments">
+          <Route element={<EquipmentQRCodeScannerPage />} path="scan" />
+          <Route
+            element={<EquipmentReturnConfirmationPage mode="returns" />}
+            path=":equipment_id/returns/:user_id/confirm"
+          />
+          <Route
+            element={<EquipmentReturnConfirmationPage mode="loans" />}
+            path=":equipment_id/loans/:user_id/confirm"
+          />
+        </Route>
       </Route>
     </ReactRouterRoutes>
   );

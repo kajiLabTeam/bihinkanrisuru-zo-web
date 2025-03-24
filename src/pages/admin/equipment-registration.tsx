@@ -5,7 +5,7 @@ import { Box, Button, Container, Flex, Grid, Heading, Link, Spinner, TextField }
 import { FormProvider, useForm } from 'react-hook-form';
 
 export default function EquipmentEditPage() {
-  const { equipment, error, loading, onSubmit } = useCreateEquipment();
+  const { equipment, error, isLoading, onSubmit } = useCreateEquipment();
   const methods = useForm<EditEquipmentForm>();
   const { handleSubmit, register } = methods;
 
@@ -13,7 +13,7 @@ export default function EquipmentEditPage() {
     <Container align="center" maxWidth="800px" px="3" py="3">
       <Heading align="center" as="h1">管理者用備品編集</Heading>
       <Box py="150px">
-        {loading
+        {isLoading
           ? (
               <Flex align="center" height="200px" justify="center">
                 <Spinner />

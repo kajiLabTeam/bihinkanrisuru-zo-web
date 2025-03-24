@@ -1,4 +1,5 @@
 import type { EquipmentStatus as EquipmentStatusValue } from '@/constants';
+import type { User } from '@/types/user';
 
 export interface Equipment {
   id: string;
@@ -33,6 +34,10 @@ export interface PutEquipmentRequest {
   place: string;
   purchase_at: number;
   tag_ids: string[];
+}
+
+export interface BorrowEquipmentRequest {
+  user_id: string;
 }
 
 export type EquipmentStatus = (typeof EquipmentStatusValue)[keyof typeof EquipmentStatusValue];

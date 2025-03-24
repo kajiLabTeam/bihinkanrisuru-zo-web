@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 
 export function useUsers() {
   const [users, setUsers] = useState<User[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchUser() {
       try {
-        setLoading(true);
+        setIsLoading(true);
         const response = await getUsers();
 
         setUsers(response.users);
@@ -19,12 +19,12 @@ export function useUsers() {
         setError(err instanceof Error ? err.message : 'エラーが発生しました');
       }
       finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
 
     void fetchUser();
   }, []);
 
-  return { users, error, loading };
+  return { users, error, isLoading };
 }

@@ -1,5 +1,7 @@
 export type EquipmentApiErrorType =
   | 'UnexpectedError'
+  | 'ReturnUnprocessableEntityError'
+  | 'BorrowUnprocessableEntityError'
   | 'BadRequestError'
   | 'NotFoundError'
   | 'FetchApiError'
@@ -7,6 +9,8 @@ export type EquipmentApiErrorType =
 
 const ERROR_MESSAGES: Record<EquipmentApiErrorType, string> = {
   UnexpectedError: '予期せぬエラーが発生しました。',
+  ReturnUnprocessableEntityError: '返却備品は貸出中ではありません。',
+  BorrowUnprocessableEntityError: '貸出備品は貸出可能な状態ではありません。',
   BadRequestError: 'リクエストが不正です。',
   NotFoundError: 'データが見つかりませんでした。',
   FetchApiError: '通信エラーが発生しました。インターネット接続を確認してください。',

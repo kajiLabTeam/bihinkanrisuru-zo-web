@@ -5,7 +5,7 @@ import { Pencil } from 'lucide-react';
 
 export default function UserListPage() {
   const { searchText, handleChange } = useSearchText();
-  const { users, error, loading } = useUsers();
+  const { users, error, isLoading } = useUsers();
 
   return (
     <Container maxWidth="800px" px="3" py="3">
@@ -32,7 +32,7 @@ export default function UserListPage() {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {loading
+          {isLoading
             ? (
                 <Table.Row>
                   <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>

@@ -1,8 +1,4 @@
-enum UserStatus {
-  PENDING = 'PENDING',
-  APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED',
-}
+import type { UserStatus as UserStatusValue } from '@/constants';
 
 export interface User {
   id: string;
@@ -15,3 +11,4 @@ export interface GetUsersResponse {
 }
 
 export type GetUserResponse = User;
+export type UserStatus = (typeof UserStatusValue)[keyof typeof UserStatusValue];
