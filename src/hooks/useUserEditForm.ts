@@ -28,7 +28,7 @@ export function useUserEditForm() {
     setTimeout(() => {
       void router('/admin/users');
     }, ERROR_REDIRECT_DELAY);
-  }, [onOpen, '/adomin/', router]);
+  }, [onOpen, router]);
 
   const handleSuccess = (message: string) => {
     flushSync(() => {
@@ -36,7 +36,7 @@ export function useUserEditForm() {
     });
 
     setTimeout(() => {
-      void router('/adomin/');
+      void router('/admin/users');
     }, ERROR_REDIRECT_DELAY);
   };
 

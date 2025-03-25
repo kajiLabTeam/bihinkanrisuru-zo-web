@@ -18,7 +18,7 @@ export function useUserCamera() {
   const handleError = useCallback((message: string) => {
     onOpen(message, 'red');
     setIsLoading(false);
-  }, []);
+  }, [onOpen]);
 
   const handleStudentIdScan = async (studentId: string) => {
     try {
