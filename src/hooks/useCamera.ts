@@ -36,12 +36,15 @@ export function useCamera() {
   }, []);
 
   const handleStudentIdScan = async (studentId: string) => {
-    setIsToastOpen(false);
     try {
+      setIsToastOpen(false);
+
       const user = await getUser(studentId);
       if (user.status !== UserStatus.APPROVED) {
-        throw new Error('この学生証は利用できません。');
+        handleError('この学生証は利用できません。');
+        return;
       }
+
       studentIdRef.current = studentId;
       setScanState({ mode: 'borrowEquipmentId', text: modeTextMap.borrowEquipmentId });
       setScanMessage('学生証をスキャンしました。備品QRコードをスキャンしてください。');
@@ -58,19 +61,21 @@ export function useCamera() {
       const equipment = await getEquipment(equipmentId);
       equipmentIdRef.current = equipmentId;
 
-      if (studentIdRef.current === null) {
-        if (equipment.status !== EquipmentStatus.BORROWED || ((equipment.borrower?.id) == null)) {
-          throw new Error('この備品は返却可能な状態ではありません。');
+      // 返却状態
+      if (equipment.status === EquipmentStatus.BORROWED && studentIdRef.current === null) {
+        if (equipment.borrower?.id === undefined) {
+          handleError('この備品は返却可能な状態ではありません。');
+          return;
         }
-        setIsCameraOn(false);
         void router(`/client/equipments/${equipmentIdRef.current}/returns/${equipment.borrower.id}/confirm`);
-        return;
       }
 
-      if (equipment.status === EquipmentStatus.AVAILABLE) {
-        setIsCameraOn(false);
+      // 貸出状態
+      else if (equipment.status === EquipmentStatus.AVAILABLE && studentIdRef.current !== null) {
         void router(`/client/equipments/${equipmentIdRef.current}/loans/${studentIdRef.current}/confirm`);
       }
+
+      throw new Error('スキャンした備品は返却・貸出状態ではありません');
     }
     catch (err) {
       handleError(err instanceof Error ? err.message : '備品QRコードスキャンに失敗しました。もう一度試してください。');
@@ -84,57 +89,39 @@ export function useCamera() {
   const videoRef = useZxing({
     async onDecodeResult(result) {
       setScanMessage(null);
-      setIsLoading(true);
 
       const scannedText = result.getText();
-      try {
-        if (isStudentId(scannedText)) {
-          await handleStudentIdScan(scannedText);
-        }
-        else if (isEquipmentId(scannedText)) {
-          await handleEquipmentIdScan(scannedText);
-        }
+
+      if (isStudentId(scannedText)) {
+        await handleStudentIdScan(scannedText);
       }
-      finally {
-        setIsLoading(false);
+      else if (isEquipmentId(scannedText)) {
+        await handleEquipmentIdScan(scannedText);
       }
+
+      setIsLoading(false);
     },
     timeBetweenDecodingAttempts: SCAN_INTERVAL,
   }).ref as RefObject<HTMLVideoElement>;
 
   const startCamera = useCallback(async () => {
     try {
-      if (videoRef.current?.srcObject)
-        return;
-
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
+      if (videoRef.current)
         videoRef.current.srcObject = stream;
-      }
     }
     catch {
       handleError('カメラへのアクセスに失敗しました。もう一度試してください。');
-      setIsCameraOn(false);
     }
   }, [videoRef, handleError]);
 
   const stopCamera = useCallback(() => {
-    if (videoRef.current?.srcObject) {
-      (videoRef.current.srcObject as MediaStream)
-        .getTracks()
-        .forEach((track) => { track.stop(); });
-
-      videoRef.current.srcObject = null;
-    }
+    videoRef.current?.srcObject
+    && (videoRef.current.srcObject as MediaStream).getTracks().forEach((track) => { track.stop(); });
   }, [videoRef]);
 
   useEffect(() => {
-    if (isCameraOn) {
-      void startCamera();
-    }
-    else {
-      stopCamera();
-    }
+    isCameraOn ? void startCamera() : stopCamera();
     return () => {
       stopCamera();
     };
