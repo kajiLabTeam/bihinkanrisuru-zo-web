@@ -9,6 +9,8 @@ import UserEditPage from './pages/admin/user-editing';
 import UserListPage from './pages/admin/user-list';
 import EquipmentQRCodeScannerPage from './pages/client/EquipmentQRCodeScanner';
 import EquipmentReturnConfirmationPage from './pages/client/EquipmentTransactionConfirmation';
+import UserCodeScannerPage from './pages/client/UserCodeScanner';
+import UserRegistrationPage from './pages/client/UserRegistrationPage';
 import TopPage from './pages/top';
 import UserEquipmentListPage from './pages/user/equipment-list';
 
@@ -41,6 +43,13 @@ export default function Routes() {
           <Route
             element={<EquipmentReturnConfirmationPage mode="loans" />}
             path=":equipment_id/loans/:user_id/confirm"
+          />
+        </Route>
+        <Route element={<ClientLayout />} path="users">
+          <Route element={<UserCodeScannerPage />} path="scan" />
+          <Route
+            element={<UserRegistrationPage />}
+            path=":user_id/register"
           />
         </Route>
       </Route>
