@@ -2,20 +2,43 @@ import type { EditUserForm } from '@/types/form';
 import type { PutUserRequest } from '@/types/user';
 import type { SubmitHandler } from 'react-hook-form';
 import { putUser } from '@/api/putUser';
+import { ERROR_REDIRECT_DELAY } from '@/constants';
 import { fetchUserAtom, userAtom } from '@/stores/user';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { useNavigate, useParams } from 'react-router';
+import { useToast } from './useToast';
 
-export function useUserForm() {
+export function useUserEditForm() {
   const router = useNavigate();
+  const { isOpen, color, message, onOpen, onClose } = useToast();
   const userId = useParams<{ user_id: string }>().user_id;
 
   const user = useAtomValue(userAtom);
   const fetchUser = useSetAtom(fetchUserAtom);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const handleError = useCallback((err: unknown) => {
+    flushSync(() => {
+      onOpen(err instanceof Error ? err.message : 'エラーが発生しました', 'red');
+    });
+
+    setTimeout(() => {
+      void router('/admin/users');
+    }, ERROR_REDIRECT_DELAY);
+  }, [onOpen, '/adomin/', router]);
+
+  const handleSuccess = (message: string) => {
+    flushSync(() => {
+      onOpen(message, 'green');
+    });
+
+    setTimeout(() => {
+      void router('/adomin/');
+    }, ERROR_REDIRECT_DELAY);
+  };
 
   const onSubmit: SubmitHandler<EditUserForm> = async (data): Promise<void> => {
     if (userId == null)
@@ -29,11 +52,10 @@ export function useUserForm() {
       } satisfies PutUserRequest;
 
       await putUser(userId, updateData);
-
-      void router('/admin/users');
+      handleSuccess('ユーザの更新が完了しました');
     }
     catch (err) {
-      setError(err instanceof Error ? err.message : 'エラーが発生しました');
+      handleError(err);
     }
     finally {
       setIsLoading(false);
@@ -51,13 +73,13 @@ export function useUserForm() {
         await fetchUser(userId);
       }
       catch (err) {
-        setError(err instanceof Error ? err.message : 'エラーが発生しました');
+        handleError(err);
       }
       finally {
         setIsLoading(false);
       }
     })();
-  }, [userId, fetchUser]);
+  }, [userId, fetchUser, handleError]);
 
-  return { user, isLoading, error, onSubmit };
+  return { isOpen, color, message, user, isLoading, onClose, onSubmit };
 }

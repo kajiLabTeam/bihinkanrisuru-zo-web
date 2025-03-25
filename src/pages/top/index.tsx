@@ -29,7 +29,6 @@ export default function TopPage({ mode = 'top' }: Props) {
               <Link className={styles.link} key={path} to={path}>{text}</Link>
             ))
           }
-
           <img alt="モグラ" className={styles.mogura} src={mogura} />
         </div>
 

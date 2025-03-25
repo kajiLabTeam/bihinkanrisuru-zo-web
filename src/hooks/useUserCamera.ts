@@ -5,27 +5,24 @@ import { isStudentId } from '@/utils/isId';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useZxing } from 'react-zxing';
+import { useToast } from './useToast';
 
 export function useUserCamera() {
   const router = useNavigate();
-  const [isToastOpen, setIsToastOpen] = useState(false);
+  const { message, isOpen, onOpen, onClose } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isCameraOn, setIsCameraOn] = useState(false);
-  const [scanMessage, setScanMessage] = useState<string | null>(null);
 
   const studentIdRef = useRef<string | null>(null);
 
   const handleError = useCallback((message: string) => {
-    setErrorMessage(message);
-    setIsToastOpen(true);
+    onOpen(message, 'red');
     setIsLoading(false);
   }, []);
 
   const handleStudentIdScan = async (studentId: string) => {
     try {
-      setIsToastOpen(false);
-
+      onClose();
       const user = await getUser(studentId);
       if (user.status !== UserStatus.APPROVED) {
         handleError('この学生証は利用できません。');
@@ -33,7 +30,6 @@ export function useUserCamera() {
       }
 
       studentIdRef.current = studentId;
-      setIsToastOpen(true);
       void router(`/client/users/${studentIdRef.current}/register`);
     }
     catch (err) {
@@ -47,8 +43,6 @@ export function useUserCamera() {
 
   const videoRef = useZxing({
     async onDecodeResult(result) {
-      setScanMessage(null);
-
       const scannedText = result.getText();
 
       if (isStudentId(scannedText)) {
@@ -84,13 +78,12 @@ export function useUserCamera() {
   }, [isCameraOn, startCamera, stopCamera]);
 
   return {
-    isToastOpen,
+    message,
+    isOpen,
     isLoading,
     videoRef,
-    scanMessage,
-    error: errorMessage,
     isCameraOn,
     handleCameraToggle,
-    onClose: () => { setIsToastOpen(false); },
+    onClose,
   };
 }

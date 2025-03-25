@@ -1,0 +1,22 @@
+.container {
+  width: 80%;
+  margin: 0 auto;
+
+  h1 {
+    text-align: center;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+  }
+
+  h3 {
+    text-align: center;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+  }
+
+  video {
+    height: 80vh;
+    display: block;
+    margin: 0 auto;
+  }
+}

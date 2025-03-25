@@ -1,11 +1,12 @@
 import type { EditUserForm } from '@/types/form';
+import { Toast } from '@/components/Toast';
 import UserStatusInput from '@/components/UserStatusInput';
-import { useUserForm } from '@/hooks/useUserForm';
+import { useUserEditForm } from '@/hooks/useUserEditForm';
 import { Box, Button, Container, Flex, Grid, Heading, Link, Spinner, TextField } from '@radix-ui/themes';
 import { FormProvider, useForm } from 'react-hook-form';
 
 export default function UserEditingPage() {
-  const { user, error, isLoading, onSubmit } = useUserForm();
+  const { isOpen, message, user, isLoading, onClose, onSubmit } = useUserEditForm();
   const methods = useForm<EditUserForm>();
   const { handleSubmit, register } = methods;
 
@@ -19,39 +20,35 @@ export default function UserEditingPage() {
                 <Spinner />
               </Flex>
             )
-          : (error != null)
+          : !user
               ? (
                   <Box>
-                    <p>{error}</p>
+                    <p>指定されたユーザが見つかりませんでした。</p>
                     <Link href="/admin/users">戻る</Link>
                   </Box>
                 )
-              : !user
-                  ? (
-                      <Box>
-                        <p>指定されたユーザが見つかりませんでした。</p>
+              : (
+                  <FormProvider {...methods}>
+                    <form onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
+                      <Grid columns="150px 1fr" gap="5">
+                        <label htmlFor="user_id">ユーザID:</label>
+                        <TextField.Root disabled id="user_id" value={user.id} />
+                        <label htmlFor="name">ユーザ名:</label>
+                        <TextField.Root defaultValue={user.name} id="name" {...register('name', { required: 'ユーザ名は必須です。' })} />
+                        <label htmlFor="name">ステータス:</label>
+                        <UserStatusInput initialStatus={user.status} register={register} />
+                      </Grid>
+                      <Flex align="center" justify="between" py="9">
                         <Link href="/admin/users">戻る</Link>
-                      </Box>
-                    )
-                  : (
-                      <FormProvider {...methods}>
-                        <form onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
-                          <Grid columns="150px 1fr" gap="5">
-                            <label htmlFor="user_id">ユーザID:</label>
-                            <TextField.Root disabled id="user_id" value={user.id} />
-                            <label htmlFor="name">ユーザ名:</label>
-                            <TextField.Root defaultValue={user.name} id="name" {...register('name', { required: 'ユーザ名は必須です。' })} />
-                            <label htmlFor="name">ステータス:</label>
-                            <UserStatusInput initialStatus={user.status} register={register} />
-                          </Grid>
-                          <Flex align="center" justify="between" py="9">
-                            <Link href="/admin/users">戻る</Link>
-                            <Button type="submit">登録</Button>
-                          </Flex>
-                        </form>
-                      </FormProvider>
-                    )}
+                        <Button type="submit">登録</Button>
+                      </Flex>
+                    </form>
+                  </FormProvider>
+                )}
       </Box>
+      {isOpen && (message != null) && (
+        <Toast color="green" message={message} onClose={onClose} />
+      )}
     </Container>
   );
 }
