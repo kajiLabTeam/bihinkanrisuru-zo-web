@@ -1,10 +1,8 @@
 import { useEquipments } from '@/hooks/useEquipments';
-import { useSearchText } from '@/hooks/useSearchText';
 import { Badge, Box, Container, Heading, Link, Spinner, Table, TextField } from '@radix-ui/themes';
 
 export default function AdminEquipmentListPage() {
-  const { searchText, handleChange } = useSearchText();
-  const { equipments, error, isLoading } = useEquipments();
+  const { equipments, error, isLoading, searchTerm, handleInputChange } = useEquipments();
 
   return (
     <Container maxWidth="1000px" px="3" py="3">
@@ -13,9 +11,9 @@ export default function AdminEquipmentListPage() {
       </Heading>
       <Box py="3">
         <TextField.Root
-          onChange={handleChange}
+          onChange={handleInputChange}
           placeholder="備品番号または名前で検索"
-          value={searchText}
+          value={searchTerm}
         />
       </Box>
       <Table.Root>
@@ -48,7 +46,7 @@ export default function AdminEquipmentListPage() {
                       </Table.Cell>
                     </Table.Row>
                   )
-                : equipments && equipments.length > 0
+                : equipments.length > 0
                   ? (
                       equipments.map((equipment) => (
                         <Table.Row key={equipment.id}>

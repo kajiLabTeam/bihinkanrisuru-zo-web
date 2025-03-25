@@ -1,5 +1,5 @@
 import type { Tag } from '@/types/tag';
-import { useTags } from '@/hooks/useTags';
+import { useEquipmentTagsForm } from '@/hooks/useEquipmentTagsForm';
 import { CheckIcon } from '@radix-ui/react-icons';
 import { Badge, Box, Flex, IconButton, Popover, ScrollArea, TextField } from '@radix-ui/themes';
 import { PlusIcon } from 'lucide-react';
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function TagInput({ initialTags }: Props) {
-  const { tags, selectedTags, searchTerm, handleInputChange, handleTagToggle } = useTags(initialTags);
+  const { tags, selectedTags, searchTerm, handleInputChange, handleTagToggle } = useEquipmentTagsForm(initialTags);
   const [open, setOpen] = useState(false);
 
   return (
