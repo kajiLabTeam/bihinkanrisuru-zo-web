@@ -1,7 +1,7 @@
 export const BACKEND_URL = import.meta.env.VITE_API_URL;
 export const DEBOUNCE_TIME = 300;
 export const TOAST_DURATION = 3000;
-export const SCAN_INTERVAL = 3000;
+export const SCAN_INTERVAL = 300;
 export const ERROR_REDIRECT_DELAY = 3000;
 
 export const EquipmentStatus = {
@@ -22,6 +22,6 @@ export const TOP_LINK_DATA = {
 };
 
 export const CLIENT_LINK_DATA = {
-  '/client/equipments/return/scan': '備品貸出ページ',
-  '/client/equipments/loans/scan': '備品返却ページ',
+  '/client/equipments/scan': '備品貸出・返却ページ',
+  '/client/users/scan': 'ユーザ登録ページ',
 };
