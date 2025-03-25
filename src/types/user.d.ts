@@ -10,6 +10,13 @@ export interface GetUsersResponse {
   users: User[];
 }
 
+export interface PostUserRequest {
+  id: string;
+  name: string;
+}
+
+export type PostUserResponse = User;
+
 export interface PutUserRequest {
   name: string;
   status: UserStatus;

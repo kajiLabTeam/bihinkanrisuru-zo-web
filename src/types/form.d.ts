@@ -11,6 +11,11 @@ export interface EditEquipmentForm {
   tags: Tag[];
 }
 
+export interface CreateUserForm {
+  id: string;
+  name: string;
+}
+
 export interface EditUserForm {
   id: string;
   name: string;
