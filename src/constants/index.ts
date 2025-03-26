@@ -17,8 +17,8 @@ export const UserStatus = {
 } as const;
 
 export const TOP_LINK_DATA = {
-  '/equipments': '備品一覧',
-  '/admin': '管理者ログイン',
+  '/user/equipments': '備品一覧',
+  '/admin/equipments': '管理者ログイン',
 };
 
 export const CLIENT_LINK_DATA = {

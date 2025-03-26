@@ -1,6 +1,6 @@
 import { useSearchText } from '@/hooks/useSearchText';
 import { useUsers } from '@/hooks/useUsers';
-import { Badge, Box, Container, Flex, Heading, Link, Spinner, Table, TextField } from '@radix-ui/themes';
+import { Badge, Box, Container, Heading, Link, Spinner, Table, TextField } from '@radix-ui/themes';
 
 export default function UserListPage() {
   const { searchText, handleChange } = useSearchText();
@@ -11,10 +11,6 @@ export default function UserListPage() {
       <Heading align="center" as="h1">
         ユーザ一覧
       </Heading>
-      <Flex justify="between" py="3">
-        <Link href="/blank">備品一覧</Link>
-        <Link href="/users">ユーザ一覧</Link>
-      </Flex>
       <Box py="3">
         <TextField.Root
           onChange={handleChange}
