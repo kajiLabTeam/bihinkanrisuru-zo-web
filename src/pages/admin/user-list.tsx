@@ -1,6 +1,6 @@
 import { useSearchText } from '@/hooks/useSearchText';
 import { useUsers } from '@/hooks/useUsers';
-import { Badge, Box, Container, Heading, Link, Spinner, Table, TextField } from '@radix-ui/themes';
+import { Badge, Box, Container, Flex, Heading, Link, Spinner, Table, TextField } from '@radix-ui/themes';
 
 export default function UserListPage() {
   const { searchText, handleChange } = useSearchText();
@@ -31,9 +31,9 @@ export default function UserListPage() {
             ? (
                 <Table.Row>
                   <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
-                    <Box>
-                      <Spinner />
-                    </Box>
+                    <Flex align="center" justify="center">
+                      <Spinner size="3" />
+                    </Flex>
                   </Table.Cell>
                 </Table.Row>
               )

@@ -1,5 +1,5 @@
 import { useEquipments } from '@/hooks/useEquipments';
-import { Badge, Box, Container, Spinner, Table, TextField } from '@radix-ui/themes';
+import { Badge, Box, Container, Flex, Spinner, Table, TextField } from '@radix-ui/themes';
 
 export default function UserEquipmentListPage() {
   const { equipments, error, isLoading, searchTerm, handleInputChange } = useEquipments();
@@ -30,9 +30,9 @@ export default function UserEquipmentListPage() {
             ? (
                 <Table.Row>
                   <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
-                    <Box>
-                      <Spinner />
-                    </Box>
+                    <Flex align="center" justify="center">
+                      <Spinner size="3" />
+                    </Flex>
                   </Table.Cell>
                 </Table.Row>
               )
