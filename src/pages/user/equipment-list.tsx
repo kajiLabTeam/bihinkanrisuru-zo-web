@@ -29,15 +29,17 @@ export default function UserEquipmentListPage() {
           {isLoading
             ? (
                 <Table.Row>
-                  <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
-                    <Spinner />
+                  <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
+                    <Box>
+                      <Spinner />
+                    </Box>
                   </Table.Cell>
                 </Table.Row>
               )
             : (error != null)
                 ? (
                     <Table.Row>
-                      <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
+                      <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
                         {error}
                       </Table.Cell>
                     </Table.Row>
@@ -72,7 +74,7 @@ export default function UserEquipmentListPage() {
                     )
                   : (
                       <Table.Row>
-                        <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
+                        <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
                           登録されている備品はありません
                         </Table.Cell>
                       </Table.Row>

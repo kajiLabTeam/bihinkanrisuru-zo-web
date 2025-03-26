@@ -30,15 +30,17 @@ export default function UserListPage() {
           {isLoading
             ? (
                 <Table.Row>
-                  <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
-                    <Spinner />
+                  <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
+                    <Box>
+                      <Spinner />
+                    </Box>
                   </Table.Cell>
                 </Table.Row>
               )
             : (error != null)
                 ? (
                     <Table.Row>
-                      <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
+                      <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
                         {error}
                       </Table.Cell>
                     </Table.Row>
@@ -63,7 +65,7 @@ export default function UserListPage() {
                     )
                   : (
                       <Table.Row>
-                        <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
+                        <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
                           ユーザーがいません
                         </Table.Cell>
                       </Table.Row>

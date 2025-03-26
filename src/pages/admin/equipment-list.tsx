@@ -33,58 +33,55 @@ export default function AdminEquipmentListPage() {
           {isLoading
             ? (
                 <Table.Row>
-                  <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
-                    <Spinner />
+                  <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
+                    <Box>
+                      <Spinner />
+                    </Box>
                   </Table.Cell>
                 </Table.Row>
               )
-            : (error != null)
+            : error != null
+              ? (
+                  <Table.Row>
+                    <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
+                      {error}
+                    </Table.Cell>
+                  </Table.Row>
+                )
+              : equipments.length > 0
                 ? (
+                    equipments.map((equipment) => (
+                      <Table.Row key={equipment.id}>
+                        <Table.RowHeaderCell>
+                          <Link href={`equipments/${equipment.id}/edit`}>{equipment.asset_id}</Link>
+                        </Table.RowHeaderCell>
+                        <Table.Cell>{equipment.name}</Table.Cell>
+                        <Table.Cell>{equipment.borrower ? equipment.borrower.name : '-'}</Table.Cell>
+                        <Table.Cell>
+                          <Badge color={equipment.status === 'BORROWED' ? 'blue' : equipment.status === 'AVAILABLE' ? 'green' : 'indigo'}>
+                            {equipment.status}
+                          </Badge>
+                        </Table.Cell>
+                        <Table.Cell>{equipment.place}</Table.Cell>
+                        <Table.Cell>
+                          {equipment.tags.map((tag) => (
+                            <Badge key={tag.id}>{tag.name}</Badge>
+                          ))}
+                        </Table.Cell>
+                        <Table.Cell>{new Date(equipment.purchase_at).toLocaleDateString()}</Table.Cell>
+                        <Table.Cell>{new Date(equipment.registration_at).toLocaleDateString()}</Table.Cell>
+                      </Table.Row>
+                    ))
+                  )
+                : (
                     <Table.Row>
-                      <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
-                        {error}
+                      <Table.Cell colSpan={8} style={{ textAlign: 'center' }}>
+                        登録されている備品はありません
                       </Table.Cell>
                     </Table.Row>
-                  )
-                : equipments.length > 0
-                  ? (
-                      equipments.map((equipment) => (
-                        <Table.Row key={equipment.id}>
-                          <Table.RowHeaderCell>
-                            <Link href={`equipments/${equipment.id}/edit`}>
-                              {equipment.asset_id}
-                            </Link>
-                          </Table.RowHeaderCell>
-                          <Table.Cell>{equipment.name}</Table.Cell>
-                          <Table.Cell>{equipment.borrower ? equipment.borrower.name : '-'}</Table.Cell>
-                          <Table.Cell>
-                            <Badge color={equipment.status === 'BORROWED' ? 'blue' : equipment.status === 'AVAILABLE' ? 'green' : 'indigo'}>
-                              {equipment.status}
-                            </Badge>
-                          </Table.Cell>
-                          <Table.Cell>{equipment.place}</Table.Cell>
-                          <Table.Cell>
-                            {
-                              equipment.tags.map((tag) => (
-                                <Badge key={tag.id}>
-                                  {tag.name}
-                                </Badge>
-                              ))
-                            }
-                          </Table.Cell>
-                          <Table.Cell>{new Date(equipment.purchase_at).toLocaleDateString()}</Table.Cell>
-                          <Table.Cell>{new Date(equipment.registration_at).toLocaleDateString()}</Table.Cell>
-                        </Table.Row>
-                      ))
-                    )
-                  : (
-                      <Table.Row>
-                        <Table.Cell colSpan={3} style={{ textAlign: 'center' }}>
-                          登録されている備品はありません
-                        </Table.Cell>
-                      </Table.Row>
-                    )}
+                  )}
         </Table.Body>
+
       </Table.Root>
     </Container>
   );
